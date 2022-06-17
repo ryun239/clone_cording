@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
+
 from django.http import HttpResponse, JsonResponse
 
 from django.views.generic import View
@@ -15,6 +16,8 @@ from django.contrib.auth import login, logout, authenticate
 
 from .models import User
 
+from django.conf import settings
+
 
 class LoginView(View):
     def post(self, request):
@@ -26,8 +29,7 @@ class LoginView(View):
             user = authenticate(request, username = name, password = password) 
             if user:
                 login(request, user)
-                # return render(request,'postapp/post.html')
-                return render(request,'post.html')
+                return render(request,'home.html')
         else:
             return HttpResponse("not OK!!")
 
@@ -35,7 +37,11 @@ class LoginView(View):
 class LogoutView(View):
     def post(self, request):
         logout(request)
-        return render(request,'home.html')
+        return redirect(reverse("home"))
+
+    def get(self, request):
+        logout(request)
+        return redirect(reverse("home"))
 
 
 @method_decorator(csrf_exempt, name = "dispatch")
