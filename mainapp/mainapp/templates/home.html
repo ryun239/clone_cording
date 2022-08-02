@@ -17,6 +17,13 @@
     <div class="main">
         <div class="col-md-6 col-sm-12">
             <div class="login-form">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
                 <form method="POST" action="{% url 'accountapp:login' %}"> 
                     {% csrf_token %}
                     <div class="form-group">
@@ -28,28 +35,13 @@
                         <input type="password" name='password' class="form-control" placeholder="Password">
                     </div>
                     <button type="submit" class="btn btn-black">Login</button>
-                    <!-- <a type="submit" class="btn btn-black" href="{% url 'accountapp:login' %}">Login</a> -->
                     <a type="submit" class="btn btn-secondary" href="{% url 'accountapp:signup'%}">Register</a>
                     <a type="submit" class="btn btn-secondary" href="{% url 'postapp:post'%}">둘러보기</a>
                 </form>
+
             </div>
         </div>
     </div>
-{% else %}
-    <!-- <div class="main">
-        <div class="col-md-6 col-sm-12">
-            <div class="login-form">
-                <form method="POST" action="{% url 'accountapp:logout' %}"> 
-                    {% csrf_token %}
-                    <h1>Hi {{ user.username}} </h1>
-                    <button type="submit" class="btn btn-black">Logout</button>
-                </form>
-            </div>
-        </div>
-    </div> -->
-    <meta http-equiv="refresh" content="0;URL='http://127.0.0.1:8000/post/'">
-
 {% endif %}
-
 
 {% endblock %}

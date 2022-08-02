@@ -12,6 +12,7 @@ from django.core.exceptions  import ValidationError
 
 from django.db import IntegrityError
 
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 
 from .models import User
@@ -30,6 +31,10 @@ class LoginView(View):
             user = authenticate(request, username = name, password = password) 
             if user:
                 login(request, user)
+                # return render(request,'home.html')
+                return redirect('http://127.0.0.1:8000/post/')
+            else:
+                messages.warning(request, "Login Failed")
                 return render(request,'home.html')
         else:
             return HttpResponse("not OK!!")
