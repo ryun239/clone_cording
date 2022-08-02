@@ -24,6 +24,7 @@ class LoginView(View):
         data = request.POST
         name = data['name']
         password = data['password']
+        print(data)
 
         if name and password:
             user = authenticate(request, username = name, password = password) 
