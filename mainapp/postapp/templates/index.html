@@ -49,7 +49,7 @@
     </div>
 
     {% if user.is_authenticated %}
-        <div class="sidebarOption" OnClick="location.href ='{% url 'accountapp:logout' %}'">
+        <div class="sidebarOption" OnClick="location.href ='{% url 'accountapp:logout'%}'">
             <span class="material-icons"> logout </span>
             {% csrf_token %}
                 <h2>Hi {{ user.username }} </h2>
@@ -81,7 +81,7 @@
         <form method="POST" enctype="multipart/form-data" action="{% url 'postapp:tweet' %}"> 
             {% csrf_token %}
             <div class="tweetbox__input">
-                <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="" />
+                <img src= "media/{{img}}" alt="" />
                 <input type="text" name='feed' placeholder="What's happening?" />
             </div>
             <button class="tweetBox__tweetButton">Tweet</button>

@@ -1,43 +1,36 @@
 from django.shortcuts import render, redirect, reverse
-
 from django.http import HttpResponse, JsonResponse
-
 from django.views.generic import View
-
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-
 from django.core.validators  import validate_email 
 from django.core.exceptions  import ValidationError
-
 from django.db import IntegrityError
-
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-
-from .models import User
-
 from django.conf import settings
-
+from .models import User
 
 class LoginView(View):
     def post(self, request):
         data = request.POST
         name = data['name']
         password = data['password']
-        print(data)
+
+        # if request.user.is_authenticated:
+        #     return redirect('http://127.0.0.1:8000/post/')
 
         if name and password:
             user = authenticate(request, username = name, password = password) 
             if user:
                 login(request, user)
-                # return render(request,'home.html')
                 return redirect('http://127.0.0.1:8000/post/')
             else:
                 messages.warning(request, "Login Failed")
                 return render(request,'home.html')
         else:
             return HttpResponse("not OK!!")
+
 
 
 class LogoutView(View):
@@ -116,17 +109,20 @@ class UserCreateView(BaseView):
         if not contactnum:
             return self.response(message = 'missing contactnum', status = 400)
 
+
+        mfile = request.FILES
+        photo = mfile['img']
         try :
             user = User.objects.create_user(
-                
                 email = email, 
                 password = password,
                 username = username, 
                 Date_Of_Birth = birthofdate,
                 Gender = gender,
-                Phone_Num = contactnum
+                Phone_Num = contactnum,
+                Profile = photo
                 )
         except IntegrityError:
             return self.response(message = "이미 존재하는 아이디입니다.", status = 400)
 
-        return self.response({'user.email' : user.email})
+        return render(request, 'home.html')
